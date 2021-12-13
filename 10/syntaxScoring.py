@@ -31,12 +31,11 @@ def partTwo(inpu) :
     with open(inpu,'r') as inp :
         op=["(","[","{","<"]
         cl=[")","]","}",">"]
-        sta=[]
-        dico={")":3,"]":57,"}":1197,">":25137}
         corrupt=False
-        uncorrupt=[]
+        listScore=[]
         for i in inp :
             sta=[]
+            score=0
             for j in i[:-1]:
                 if j in op :
                     sta.append(j)
@@ -46,25 +45,14 @@ def partTwo(inpu) :
                     else:
                         corrupt=True
                         break
-            if corrupt :
-                corrupt=False
-            else :
-                uncorrupt.append([i[:-1],sta])
-        compl=[]
-        for i in uncorrupt :
-            i[1].reverse()
-            compl.append(i[1])
-        listScore=[]
-        for i in compl :
-            score=0
-            for j in i :
-                score=score*5
-                score+=op.index(j)+1
-            listScore.append(score)
+            if not corrupt :
+                sta.reverse()
+                for j in sta :
+                    score=(score*5)+op.index(j)+1
+                listScore.append(score)
+            corrupt=False
         listScore.sort()
         return(listScore[int(len(listScore)/2)])
-
-                    
 
 
 print("==> PART TWO <==")
