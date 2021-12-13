@@ -49,36 +49,37 @@ print("==> PART ONE <==")
 print(partOne(sys.argv[1]))
 print()
 
-"""
-Don't work, recursive broke my brain, will do another algo
-(extend every number that is not a 9 until 9 found)
-"""
-def partTwoBroken(inpu) :
+def partTwo(inpu) :
     with open(inpu,'r') as inp :
         hmap=[]
         for i in inp :
             hmap.append([int(j) for j in i[:-1]])
         c=0
-        allVoi=[]
+        firl=[]
         while c<len(hmap) :
             k=0
             while k<len(hmap[c]):
                 voi=getInfVoisin([c,k],hmap)
                 if voi :
-                    bassin=[[c,k]]
-                    for i in voi :
-                        if i not in bassin :
-                            bassin.append(i)
-                            print(getVoisin([i[0],i[1]],hmap,bassin))
-
-                            #bassin.append(getVoisin([i[0],i[1]],hmap,bassin))
+                    firl.append(voi)
                 k+=1
             c+=1
+        bassin=[]
+        flooded=[]
+        i=0
+        while i<len(firl) :
+            bassin.append([])
+            bassin[i].append(getVoisin([firl[i]],hmap,i))
+            i+=1
+    sizeBa=[]
+    for i in bassin :
+        sizeBa.append(len(i[0]))
+    sizeBa.sort()
+    return(sizeBa[-3]*sizeBa[-2]*sizeBa[-1])
         
 def getInfVoisin(pos,hmap) :
     """
     pos is a list 2of coord [x,y]
-    limit is a list of coord defining the top and bottom [nbrLine,nbrColonne]
     """
     x=pos[0]
     y=pos[1]
@@ -105,29 +106,50 @@ def getInfVoisin(pos,hmap) :
         coords.append([x,y+1])
     if hmap[x][y]<up and hmap[x][y]<down and hmap[x][y]<left and hmap[x][y]<right :
         coords=[i for i in coords if hmap[i[0]][i[1]]!=9]    
-        return(coords)
+        return(pos)
 
-def getVoisin(pos,hmap,lol):
-    x=pos[0]
-    y=pos[1]
-    coords=[]
-    if not x==0 :
-        coords.append([x-1,y])
-    if not x+1==len(hmap) :
-        coords.append([x+1,y])
-    if not y==0 :
-        coords.append([x,y-1])
-    if not y+1==len(hmap[x]):
-        coords.append([x,y+1])
-    for i in coords :
-        if not hmap[i[0]][i[1]]==9 :
-            if i not in lol:
-                lol.append(i)
-                return(getVoisin(i,hmap,lol))
-            else :
-                return(lol)
+def getVoisin(pos,hmap,ind,bas=None):
+    if not bas :
+        bas=[]
+    found=False
+    lol=[]
+    for i in pos :
+        x=i[0]
+        y=i[1]
+        coords=[]
+        if i not in bas :
+            lol.append(i)
+        if not x==0 :
+            coords.append([x-1,y])
+        if not x+1==len(hmap) :
+            coords.append([x+1,y])
+        if not y==0 :
+            coords.append([x,y-1])
+        if not y+1==len(hmap[x]):
+            coords.append([x,y+1])
+        for j in coords :
+            if not hmap[j[0]][j[1]]==9 :
+                if j not in bas:
+                    found=True
+                    bas.append(j)
+                    lol.append(j)
+    if found :
+        return(getVoisin(lol,hmap,ind,bas))
+    else :
+        return(bas)
+        
 
-def partTwo(inpu) :
+
+
+
+
+print("==> PART TWO <==")
+print(partTwo(sys.argv[1]))
+print()
+
+
+
+def partTwoHorrible(inpu) :
     with open(inpu,'r') as inp :
         hmap=[]
         for i in inp :
@@ -200,6 +222,3 @@ def partTwo(inpu) :
         print(size[-3]*size[-2]*size[-1])
 
 
-print("==> PART TWO <==")
-print(partTwo(sys.argv[1]))
-print()
