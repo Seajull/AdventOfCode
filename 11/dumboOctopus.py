@@ -1,71 +1,217 @@
 import sys, re
-
+nbrFlash=0
 def partOne(inpu,step) :
     with open(inpu,'r') as inp :
-        mapOcto=[i[:-1] for i in inp]
+        mapOcto=[[int(j) for j in i[:-1]] for i in inp] # it work trust me
+#        print("---------------------------------")
+#        for i in mapOcto:
+#            print(i)
         c=0
         while c<step :
-            flash(mapOcto)
+            up(mapOcto)
             c+=1
 
-def flash(mapo,pos=None,haveFlashed=None,nbrFlash=None) :
-    if not haveFlashed :
-        haveFlashed=[]
-    if not nbrFlash :
-        nbrFlash=0
-    if not pos :
-        pos=[[0,0]]
-    newMapo=list(mapo)
-    isFlash=False
-    for i in pos :
-        x=i[0]
-        y=i[1]
-        if int(mapo[x][y])>=9 :
-            isFlash=True
-            newMapo[x][y]=0
-            nbrFlash+=1
-            newPos=getVoisin([x,y],mapo)
-            for j in newPos :
-                newMapo[j[0]][j[1]]+=1
-                flash(newMapo)
-    if not isFlash :
-        return(nbrFlash)
+def up(mapo) :
+    l=0
+    alert=False
+    while l<len(mapo):
+        p=0
+        while p<len(mapo[l]) :
+            mapo[l][p]+=1
+            if mapo[l][p]==10 :
+                alert=True
+            p+=1
+        l+=1
+    if alert :
+        mapo=flash(mapo)
+#        print("NEXT STEP")
+#    print("---------------------------------")
+#    for i in mapo:
+#        print(i)
 
-def getVoisin(pos,mapo):
-    x=pos[0]
-    y=pos[1]
-    coords=[]
-    if not x==0 :
-        coords.append([x-1,y])
-    if not y==0 :
-        coords.append([x,y-1])
-    if not y==0 and not x==0 :
-        coords.append([x-1,y-1])
-    if not x+1==len(hmap) :
-        coords.append([x+1,y])
-    if not y+1==len(hmap[x]):
-        coords.append([x,y+1])
-    if not x+1==len(hmap) and not y+1==len(hmap[x]):
-        coords.append([x+1,y+1])
-    if not y==0 and not x+1==len(hmap) :
-        coords.append([x+1,y-1])
-    if not x==0 and not y+1==len(hmap[x]):
-        coords.append([x-1,y+1])
-    return(coords)
+def flash(mapo) :
+    global nbrFlash
+    l=0
+    flas=False
+    while l<len(mapo):
+        p=0
+        while p<len(mapo[l]) :
+            if type(mapo[l][p])==int :
+                if mapo[l][p]>=10 :
+                    mapo[l][p]="f"
+                    try :
+                        if p-1>=0 and l-1>=0 :
+                            mapo[l-1][p-1]+=1
+                    except: 
+                        pass
+                    try :
+                        if l-1>=0 :
+                            mapo[l-1][p]+=1
+                    except: 
+                        pass
+                    try :
+                        if l-1>=0 :
+                            mapo[l-1][p+1]+=1
+                    except: 
+                        pass
+                    try :
+                        if p-1>=0 :
+                            mapo[l][p-1]+=1
+                    except: 
+                        pass
+                    try :
+                        mapo[l][p+1]+=1
+                    except: 
+                        pass
+                    try :
+                        if p-1>=0 :
+                            mapo[l+1][p-1]+=1
+                    except: 
+                        pass
+                    try :
+                        mapo[l+1][p]+=1
+                    except: 
+                        pass
+                    try :
+                        mapo[l+1][p+1]+=1
+                    except: 
+                        pass
+                    flas=True
+                    break
+                else :
+                    flas=False
+            p+=1
+        if flas :
+            break
+        l+=1
+    if flas :
+        nbrFlash+=1
+        mapo=flash(mapo)
+    else :
+        l=0
+        while l<len(mapo):
+            p=0
+            while p<len(mapo[l]) :
+                if type(mapo[l][p])!=int :
+                    mapo[l][p]=0
+                p+=1
+            l+=1
+    return(mapo)
+        
+
 
 print()
 print("==> PART ONE <==")
-print(partOne(sys.argv[1],100))
+partOne(sys.argv[1],100)
+print(nbrFlash)
 print()
 
 ##############################################################################
 
-def partTwo(inpu) :
+def partTwo(inpu,step) :
     with open(inpu,'r') as inp :
-        pass
+        mapOcto=[[int(j) for j in i[:-1]] for i in inp] # it work trust me
+#        print("---------------------------------")
+#        for i in mapOcto:
+#            print(i)
+        global c
+        c=0
+        while c<step :
+            up(mapOcto)
+            c+=1
+
+def up(mapo) :
+    l=0
+    alert=False
+    while l<len(mapo):
+        p=0
+        while p<len(mapo[l]) :
+            mapo[l][p]+=1
+            if mapo[l][p]==10 :
+                alert=True
+            p+=1
+        l+=1
+    if alert :
+        mapo=flash(mapo)
+#        print("NEXT STEP")
+#    print("---------------------------------")
+#    for i in mapo:
+#        print(i)
+
+def flash(mapo) :
+    l=0
+    flas=False
+    while l<len(mapo):
+        p=0
+        while p<len(mapo[l]) :
+            if type(mapo[l][p])==int :
+                if mapo[l][p]>=10 :
+                    mapo[l][p]="f"
+                    try :
+                        if p-1>=0 and l-1>=0 :
+                            mapo[l-1][p-1]+=1
+                    except: 
+                        pass
+                    try :
+                        if l-1>=0 :
+                            mapo[l-1][p]+=1
+                    except: 
+                        pass
+                    try :
+                        if l-1>=0 :
+                            mapo[l-1][p+1]+=1
+                    except: 
+                        pass
+                    try :
+                        if p-1>=0 :
+                            mapo[l][p-1]+=1
+                    except: 
+                        pass
+                    try :
+                        mapo[l][p+1]+=1
+                    except: 
+                        pass
+                    try :
+                        if p-1>=0 :
+                            mapo[l+1][p-1]+=1
+                    except: 
+                        pass
+                    try :
+                        mapo[l+1][p]+=1
+                    except: 
+                        pass
+                    try :
+                        mapo[l+1][p+1]+=1
+                    except: 
+                        pass
+                    flas=True
+                    break
+                else :
+                    flas=False
+            p+=1
+        if flas :
+            break
+        l+=1
+    if flas :
+        mapo=flash(mapo)
+    else :
+        nbrEle=sum(len(v) for v in mapo)
+        countf=0
+        l=0
+        while l<len(mapo):
+            p=0
+            while p<len(mapo[l]) :
+                if type(mapo[l][p])!=int :
+                    mapo[l][p]=0
+                    countf+=1
+                p+=1
+            l+=1
+        if countf==nbrEle :
+            print(c)
+    return(mapo)
 
 print("==> PART TWO <==")
-print(partTwo(sys.argv[1]))
+partTwo(sys.argv[1],280)
 print()
 
 
