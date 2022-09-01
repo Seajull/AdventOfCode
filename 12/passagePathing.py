@@ -12,6 +12,7 @@ def partOne(inpu) :
                 dcon[isp[1]].append(isp[0])
             else :
                 dcon[isp[1]]=[isp[0]]
+        print(dcon)
         pat=nextP(dcon,"start")
         patUni=[]
         for i in pat :

@@ -91,9 +91,6 @@ def partTwo(inpu,step) :
                 mil=i
         return(round((ma+0.001)/2)-round((mi+0.001)/2))
 
-            
-
-        
         
 print()
 print("==> PART TWO <==")
