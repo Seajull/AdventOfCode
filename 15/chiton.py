@@ -15,6 +15,7 @@ def partOne(inpu) :
     visited=[]
     updated={}
     visited.append(coord)
+    print(mat)
     while len(visited) < sum([len(x) for x in mat]):
         for i in voisin :
             idV=str(i[0])+";"+str(i[1])
@@ -131,7 +132,7 @@ def partTwo(inpu) :
 print()
 print("==> PART TWO <==")
 print()
-print(partTwo(sys.argv[1]))
+#print(partTwo(sys.argv[1]))
 print()
 
 
